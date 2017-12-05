@@ -327,4 +327,65 @@ public class clienteForm extends JInternalFrame {
 		btnCancelar.setEnabled(b);
 		txtNombres.grabFocus();
 	}
+	}
+	private void eliminar()
+	{	try {
+			int op=JOptionPane.showConfirmDialog(null, "Desea borrar","Pregunta",
+				JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+			if(op==JOptionPane.YES_OPTION)
+				{
+				clienteVO objclienteVO=new clienteVO();
+				objclienteVO.setCodigo(txtCodigo.getText());
+				objclienteDao.elimina(objclienteVO);
+				JOptionPane.showMessageDialog(null, "Registro Borrado");
+				cargaRegistro();
+				mostrarRegistro();
+				}
+			} 
+		catch (ClassNotFoundException | SQLException e) 
+			{
+				e.printStackTrace();
+			}
+	}
+	private void editar()
+	{
+		habilitaControles(true);
+		getRootPane().setDefaultButton(btnGrabar);
+		sw=false;
+	}
+	private void limpiar()
+	{
+		txtCodigo.setText("");
+		txtNombres.setText("");
+		txtRuc.setText("");
+		txtDireccion.setText("");
+		txtTelefono.setText("");
+		txtCodigo.requestFocus();
+	}
+	private void cargaRegistro() 
+	{	try
+		{
+			rsCliente=objclienteDao.cargaRegistro();
+			rsCliente.next();
+		} catch (ClassNotFoundException | SQLException e)
+		{
+			e.printStackTrace();
+		}		
+	}
+	private void mostrarRegistro()
+	{	
+		try {
+			txtCodigo.setText(rsCliente.getString(1));
+			txtNombres.setText(rsCliente.getString(2));
+			txtRuc.setText(rsCliente.getString(3));
+			txtDireccion.setText(rsCliente.getString(4));
+			txtTelefono.setText(rsCliente.getString(5));
+			} 
+			catch (SQLException e)
+			{
+				JOptionPane.showMessageDialog(null, "No se encontro registro");
+				e.printStackTrace();
+			}
+	}
+
 
